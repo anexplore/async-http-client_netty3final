@@ -316,6 +316,10 @@ public final class NettyResponseFuture<V> extends AbstractListenableFuture<V> {
         return redirectCount.incrementAndGet();
     }
 
+    public int getCurrentRedirectCount() {
+    	return redirectCount.get();
+    }
+    
     public void setTimeoutsHolder(TimeoutsHolder timeoutsHolder) {
         this.timeoutsHolder = timeoutsHolder;
     }

@@ -168,7 +168,13 @@ public interface Request {
      * Return null if not set.
      */
     Boolean getFollowRedirect();
-
+    
+    /**
+     * Return max redirect count for this request
+     * @return max redirect count for this request
+     */
+    Integer getMaxRedirects();
+    
     /**
      * Overrides the config default value
      * @return the request timeout

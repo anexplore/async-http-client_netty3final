@@ -65,6 +65,7 @@ public abstract class RequestBuilderBase<T extends RequestBuilderBase<T>> {
         private Realm realm;
         private File file;
         private Boolean followRedirects;
+        private Integer maxRedirects;
         private int requestTimeout;
         private long rangeOffset;
         public String charset;
@@ -96,6 +97,7 @@ public abstract class RequestBuilderBase<T extends RequestBuilderBase<T>> {
                 this.realm = prototype.getRealm();
                 this.file = prototype.getFile();
                 this.followRedirects = prototype.getFollowRedirect();
+                this.maxRedirects = prototype.getMaxRedirects();
                 this.requestTimeout = prototype.getRequestTimeout();
                 this.rangeOffset = prototype.getRangeOffset();
                 this.charset = prototype.getBodyEncoding();
@@ -203,7 +205,12 @@ public abstract class RequestBuilderBase<T extends RequestBuilderBase<T>> {
         public Boolean getFollowRedirect() {
             return followRedirects;
         }
-
+        
+        @Override
+        public Integer getMaxRedirects() {
+        	return maxRedirects;
+        }
+        
         @Override
         public int getRequestTimeout() {
             return requestTimeout;
@@ -545,6 +552,11 @@ public abstract class RequestBuilderBase<T extends RequestBuilderBase<T>> {
         return derived.cast(this);
     }
 
+    public T setMaxRedirects(int maxRedirects) {
+    	request.maxRedirects = maxRedirects;
+    	return derived.cast(this);
+    }
+    
     public T setRequestTimeout(int requestTimeout) {
         request.requestTimeout = requestTimeout;
         return derived.cast(this);

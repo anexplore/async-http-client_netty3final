@@ -181,6 +181,11 @@ public class RequestBuilder extends RequestBuilderBase<RequestBuilder> {
     }
 
     @Override
+    public RequestBuilder setMaxRedirects(int maxRedirects) {
+    	return super.setMaxRedirects(maxRedirects);
+    }
+    
+    @Override
     public RequestBuilder addOrReplaceCookie(Cookie c) {
         return super.addOrReplaceCookie(c);
     }
