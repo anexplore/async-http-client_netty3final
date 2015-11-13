@@ -43,6 +43,8 @@ import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.ConnectionPoolPartitioning;
 import com.ning.http.client.ProxyServer;
 import com.ning.http.client.SSLEngineFactory;
+import com.ning.http.client.TooManyConnectionsException;
+import com.ning.http.client.TooManyConnectionsPerHostException;
 import com.ning.http.client.providers.netty.Callback;
 import com.ning.http.client.providers.netty.NettyAsyncHttpProviderConfig;
 import com.ning.http.client.providers.netty.channel.pool.ChannelPool;
@@ -124,8 +126,10 @@ public class ChannelManager {
         }
         this.channelPool = channelPool;
 
-        tooManyConnections = buildStaticIOException(String.format("Too many connections %s", config.getMaxConnections()));
-        tooManyConnectionsPerHost = buildStaticIOException(String.format("Too many connections per host %s", config.getMaxConnectionsPerHost()));
+        //tooManyConnections = buildStaticIOException(String.format("Too many connections %s", config.getMaxConnections()));
+        //tooManyConnectionsPerHost = buildStaticIOException(String.format("Too many connections per host %s", config.getMaxConnectionsPerHost()));
+        tooManyConnections = new TooManyConnectionsException(String.format("Too many connections %s", config.getMaxConnections()));
+        tooManyConnectionsPerHost = new TooManyConnectionsPerHostException(String.format("Too many connections per host %s", config.getMaxConnectionsPerHost()));
         poolAlreadyClosed = buildStaticIOException("Pool is already closed");
         maxTotalConnectionsEnabled = config.getMaxConnections() > 0;
         maxConnectionsPerHostEnabled = config.getMaxConnectionsPerHost() > 0;
