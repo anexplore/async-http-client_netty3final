@@ -69,6 +69,11 @@ public final class AsyncHttpClientConfigDefaults {
         return System.getProperty(ASYNC_CLIENT + "userAgent", "AHC/1.0");
     }
 
+    public static int defaultIoThreadBaseNum() {
+    	return Integer.getInteger(ASYNC_CLIENT + "ioThreadBaseNum", 
+    			Runtime.getRuntime().availableProcessors());
+    }
+    
     public static int defaultIoThreadMultiplier() {
         return Integer.getInteger(ASYNC_CLIENT + "ioThreadMultiplier", 2);
     }

@@ -76,6 +76,7 @@ public class AsyncHttpClientConfig {
     protected int maxRequestRetry;
     protected boolean disableUrlEncodingForBoundRequests;
     protected int ioThreadMultiplier;
+    protected int ioThreadBaseNum;
     protected String[] enabledProtocols;
     protected String[] enabledCipherSuites;
     protected Integer sslSessionCacheSize;
@@ -112,6 +113,7 @@ public class AsyncHttpClientConfig {
             List<IOExceptionFilter> ioExceptionFilters,//
             int maxRequestRetry, //
             boolean disableUrlEncodingForBoundedRequests, //
+            int ioThreadBaseNum,//
             int ioThreadMultiplier, //
             String[] enabledProtocols,//
             String[] enabledCipherSuites,//
@@ -402,6 +404,13 @@ public class AsyncHttpClientConfig {
     }
 
     /**
+     * @return NioWorkers base number, default is availableProcessors()
+     */
+    public int getIoThreadBaseNum() {
+    	return ioThreadBaseNum;
+    }
+    
+    /**
      * <p>
      * In the case of a POST/Redirect/Get scenario where the server uses a 302
      * for the redirect, should AHC respond to the redirect with a GET or
@@ -505,6 +514,7 @@ public class AsyncHttpClientConfig {
         private final List<IOExceptionFilter> ioExceptionFilters = new LinkedList<>();
         private int maxRequestRetry = defaultMaxRequestRetry();
         private boolean disableUrlEncodingForBoundedRequests = defaultDisableUrlEncodingForBoundRequests();
+        private int ioThreadBaseNum = defaultIoThreadBaseNum();
         private int ioThreadMultiplier = defaultIoThreadMultiplier();
         private String[] enabledProtocols = defaultEnabledProtocols();
         private String[] enabledCipherSuites;
@@ -857,6 +867,11 @@ public class AsyncHttpClientConfig {
             return this;
         }
 
+        public Builder setIoThreadBaseNum(int num) {
+        	this.ioThreadBaseNum = num;
+        	return this;
+        }
+        
         /**
          * Set the {@link HostnameVerifier}
          *
@@ -1032,6 +1047,7 @@ public class AsyncHttpClientConfig {
                     ioExceptionFilters,//
                     maxRequestRetry, //
                     disableUrlEncodingForBoundedRequests, //
+                    ioThreadBaseNum,
                     ioThreadMultiplier, //
                     enabledProtocols, //
                     enabledCipherSuites, //
