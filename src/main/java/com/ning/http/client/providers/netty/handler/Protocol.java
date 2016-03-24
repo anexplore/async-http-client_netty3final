@@ -109,9 +109,10 @@ public abstract class Protocol {
             Realm realm) throws Exception {
 
         if (followRedirect(config, request) && REDIRECT_STATUSES.contains(statusCode)) {
-            if (request.getMaxRedirects() != null ?
-            		future.incrementAndGetCurrentRedirectCount() > request.getMaxRedirects() :
-            		future.incrementAndGetCurrentRedirectCount() > config.getMaxRedirects()) {
+            int redirectCount = future.incrementAndGetCurrentRedirectCount();
+        	if (request.getMaxRedirects() != null ?
+            		redirectCount > request.getMaxRedirects() :
+            		redirectCount > config.getMaxRedirects()) {
                 throw new MaxRedirectException("Maximum redirect reached: config:" + 
             		config.getMaxRedirects() + ",request:" +
             		request.getMaxRedirects() );
