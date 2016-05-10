@@ -18,6 +18,7 @@ import static com.ning.http.util.AsyncHttpProviderUtils.useProxyConnect;
 import static com.ning.http.util.AsyncHttpProviderUtils.REMOTELY_CLOSED_EXCEPTION;
 import static com.ning.http.util.AsyncHttpProviderUtils.getDefaultPort;
 import static com.ning.http.util.AsyncHttpProviderUtils.requestTimeout;
+import static com.ning.http.util.AsyncHttpProviderUtils.readTimeout;
 import static com.ning.http.util.AuthenticatorUtils.perConnectionAuthorizationHeader;
 import static com.ning.http.util.AuthenticatorUtils.perConnectionProxyAuthorizationHeader;
 import static com.ning.http.util.ProxyUtils.avoidProxy;
@@ -397,7 +398,7 @@ public final class NettyRequestSender {
             timeoutsHolder.requestTimeout = requestTimeout;
         }
 
-        int readTimeoutValue = config.getReadTimeout();
+        int readTimeoutValue = readTimeout(config, nettyResponseFuture.getRequest());
         if (readTimeoutValue != -1 && readTimeoutValue < requestTimeoutInMs) {
             // no need for a readTimeout that's less than the requestTimeout
             Timeout readTimeout = newTimeout(new ReadTimeoutTimerTask(nettyResponseFuture, this, timeoutsHolder,

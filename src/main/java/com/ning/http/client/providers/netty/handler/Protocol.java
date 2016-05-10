@@ -113,7 +113,7 @@ public abstract class Protocol {
         	if (request.getMaxRedirects() != null ?
             		redirectCount > request.getMaxRedirects() :
             		redirectCount > config.getMaxRedirects()) {
-                throw new MaxRedirectException("Maximum redirect reached: config:" + 
+                throw new MaxRedirectException("Maximum redirect:[" + redirectCount +"] reached: config:" + 
             		config.getMaxRedirects() + ",request:" +
             		request.getMaxRedirects() );
 
@@ -134,6 +134,7 @@ public abstract class Protocol {
                         .setProxyServer(request.getProxyServer())//
                         .setRealm(request.getRealm())//
                         .setRequestTimeout(request.getRequestTimeout())//
+                        .setReadTimeout(request.getReadTimeout())
                         .setVirtualHost(request.getVirtualHost());
                 if (keepBody) {
                     requestBuilder.setBodyEncoding(request.getBodyEncoding());

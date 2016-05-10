@@ -180,7 +180,13 @@ public interface Request {
      * @return the request timeout
      */
     int getRequestTimeout();
-
+    
+    /**
+     * Overrides the config default value
+     * @return the read timeout
+     */
+    int getReadTimeout();	
+    
     /**
      * Return the HTTP Range header value, or
      *

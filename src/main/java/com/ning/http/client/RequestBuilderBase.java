@@ -67,6 +67,7 @@ public abstract class RequestBuilderBase<T extends RequestBuilderBase<T>> {
         private Boolean followRedirects;
         private Integer maxRedirects;
         private int requestTimeout;
+        private int readTimeout;
         private long rangeOffset;
         public String charset;
         private ConnectionPoolPartitioning connectionPoolPartitioning = ConnectionPoolPartitioning.PerHostConnectionPoolPartitioning.INSTANCE;
@@ -99,6 +100,7 @@ public abstract class RequestBuilderBase<T extends RequestBuilderBase<T>> {
                 this.followRedirects = prototype.getFollowRedirect();
                 this.maxRedirects = prototype.getMaxRedirects();
                 this.requestTimeout = prototype.getRequestTimeout();
+                this.readTimeout = prototype.getReadTimeout();
                 this.rangeOffset = prototype.getRangeOffset();
                 this.charset = prototype.getBodyEncoding();
                 this.connectionPoolPartitioning = prototype.getConnectionPoolPartitioning();
@@ -215,7 +217,12 @@ public abstract class RequestBuilderBase<T extends RequestBuilderBase<T>> {
         public int getRequestTimeout() {
             return requestTimeout;
         }
-
+        
+        @Override
+        public int getReadTimeout() {
+        	return readTimeout;
+        }
+        
         @Override
         public long getRangeOffset() {
             return rangeOffset;
@@ -559,6 +566,11 @@ public abstract class RequestBuilderBase<T extends RequestBuilderBase<T>> {
     
     public T setRequestTimeout(int requestTimeout) {
         request.requestTimeout = requestTimeout;
+        return derived.cast(this);
+    }
+    
+    public T setReadTimeout(int readTimeout) {
+        request.readTimeout = readTimeout;
         return derived.cast(this);
     }
 

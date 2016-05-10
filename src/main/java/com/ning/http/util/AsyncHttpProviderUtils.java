@@ -169,7 +169,11 @@ public class AsyncHttpProviderUtils {
     public static int requestTimeout(AsyncHttpClientConfig config, Request request) {
         return request.getRequestTimeout() != 0 ? request.getRequestTimeout() : config.getRequestTimeout();
     }
-
+    
+    public static int readTimeout(AsyncHttpClientConfig config, Request request) {
+        return request.getReadTimeout() != 0 ? request.getReadTimeout() : config.getReadTimeout();
+    }
+    
     public static boolean followRedirect(AsyncHttpClientConfig config, Request request) {
         return request.getFollowRedirect() != null ? request.getFollowRedirect().booleanValue() : config.isFollowRedirect();
     }
