@@ -183,9 +183,15 @@ public final class NettyRequestFactory {
                 headers.set(header.getKey(), header.getValue());
             }
 
-            if (isNonEmpty(request.getCookies()))
-                headers.set(HttpHeaders.Names.COOKIE, CookieEncoder.encode(request.getCookies()));
-
+            if (isNonEmpty(request.getCookies())) {
+            	//add: merge cookie not simply replace
+            	if (headers.get(HttpHeaders.Names.COOKIE) != null) {
+            		headers.set(HttpHeaders.Names.COOKIE, CookieEncoder.encode(request.getCookies())
+            				+"; " + headers.get(HttpHeaders.Names.COOKIE));
+            	} else {
+            		headers.set(HttpHeaders.Names.COOKIE, CookieEncoder.encode(request.getCookies()));
+            	}
+            }
             if (config.isCompressionEnforced() && !headers.contains(HttpHeaders.Names.ACCEPT_ENCODING))
                 headers.set(HttpHeaders.Names.ACCEPT_ENCODING, GZIP_DEFLATE);
         }
