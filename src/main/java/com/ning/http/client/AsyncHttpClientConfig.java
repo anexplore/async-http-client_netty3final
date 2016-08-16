@@ -150,6 +150,7 @@ public class AsyncHttpClientConfig {
         this.maxRequestRetry = maxRequestRetry;
         this.disableUrlEncodingForBoundRequests = disableUrlEncodingForBoundedRequests;
         this.ioThreadMultiplier = ioThreadMultiplier;
+        this.ioThreadBaseNum = ioThreadBaseNum;
         this.enabledProtocols = enabledProtocols;
         this.enabledCipherSuites = enabledCipherSuites;
         this.sslSessionCacheSize = sslSessionCacheSize;
@@ -987,6 +988,7 @@ public class AsyncHttpClientConfig {
 
             disableUrlEncodingForBoundedRequests = prototype.isDisableUrlEncodingForBoundedRequests();
             ioThreadMultiplier = prototype.getIoThreadMultiplier();
+            ioThreadBaseNum = prototype.getIoThreadBaseNum();
             maxRequestRetry = prototype.getMaxRequestRetry();
             allowPoolingSslConnections = prototype.isAllowPoolingConnections();
             hostnameVerifier = prototype.getHostnameVerifier();

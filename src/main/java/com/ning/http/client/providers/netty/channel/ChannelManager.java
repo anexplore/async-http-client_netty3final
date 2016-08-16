@@ -187,7 +187,7 @@ public class ChannelManager {
             ExecutorService e = nettyConfig.getBossExecutorService();
             if (e == null)
                 e = Executors.newCachedThreadPool();
-            int numWorkers = config.getIoThreadMultiplier() * Runtime.getRuntime().availableProcessors();
+            int numWorkers = config.getIoThreadMultiplier() * config.getIoThreadBaseNum();
             LOGGER.trace("Number of application's worker threads is {}", numWorkers);
             socketChannelFactory = new NioClientSocketChannelFactory(e, config.executorService(), numWorkers);
             allowReleaseSocketChannelFactory = true;
