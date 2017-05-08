@@ -78,6 +78,7 @@ public class AsyncHttpClientConfig {
     protected boolean disableUrlEncodingForBoundRequests;
     protected int ioThreadMultiplier;
     protected int ioThreadBaseNum;
+    protected int maxResponseBodySize;
     protected String[] enabledProtocols;
     protected String[] enabledCipherSuites;
     protected Integer sslSessionCacheSize;
@@ -116,6 +117,7 @@ public class AsyncHttpClientConfig {
             boolean disableUrlEncodingForBoundedRequests, //
             int ioThreadBaseNum,//
             int ioThreadMultiplier, //
+            int maxResponseBodySize,
             String[] enabledProtocols,//
             String[] enabledCipherSuites,//
             Integer sslSessionCacheSize,//
@@ -151,6 +153,7 @@ public class AsyncHttpClientConfig {
         this.disableUrlEncodingForBoundRequests = disableUrlEncodingForBoundedRequests;
         this.ioThreadMultiplier = ioThreadMultiplier;
         this.ioThreadBaseNum = ioThreadBaseNum;
+        this.maxResponseBodySize = maxResponseBodySize;
         this.enabledProtocols = enabledProtocols;
         this.enabledCipherSuites = enabledCipherSuites;
         this.sslSessionCacheSize = sslSessionCacheSize;
@@ -418,6 +421,13 @@ public class AsyncHttpClientConfig {
     }
     
     /**
+     * @return max response body size in bytes
+     */
+    public int getMaxResponseBodySize() {
+        return maxResponseBodySize;
+    }
+    
+    /**
      * <p>
      * In the case of a POST/Redirect/Get scenario where the server uses a 302
      * for the redirect, should AHC respond to the redirect with a GET or
@@ -523,6 +533,7 @@ public class AsyncHttpClientConfig {
         private boolean disableUrlEncodingForBoundedRequests = defaultDisableUrlEncodingForBoundRequests();
         private int ioThreadBaseNum = defaultIoThreadBaseNum();
         private int ioThreadMultiplier = defaultIoThreadMultiplier();
+        private int maxResponseBodySize = defaultMaxResponseBodySize();
         private String[] enabledProtocols = defaultEnabledProtocols();
         private String[] enabledCipherSuites;
         private Integer sslSessionCacheSize = defaultSslSessionCacheSize();
@@ -880,6 +891,15 @@ public class AsyncHttpClientConfig {
         }
         
         /**
+         * set max response body size, default is Integer.MAX_VALUE 
+         * @param maxResponseBodySize
+         */
+        public Builder setMaxResponseBodySize(int maxResponseBodySize) {
+            this.maxResponseBodySize = maxResponseBodySize;
+            return this;
+        }
+        
+        /**
          * Set the {@link HostnameVerifier}
          *
          * @param hostnameVerifier {@link HostnameVerifier}
@@ -989,6 +1009,7 @@ public class AsyncHttpClientConfig {
             disableUrlEncodingForBoundedRequests = prototype.isDisableUrlEncodingForBoundedRequests();
             ioThreadMultiplier = prototype.getIoThreadMultiplier();
             ioThreadBaseNum = prototype.getIoThreadBaseNum();
+            maxResponseBodySize = prototype.getMaxResponseBodySize();
             maxRequestRetry = prototype.getMaxRequestRetry();
             allowPoolingSslConnections = prototype.isAllowPoolingConnections();
             hostnameVerifier = prototype.getHostnameVerifier();
@@ -1057,6 +1078,7 @@ public class AsyncHttpClientConfig {
                     disableUrlEncodingForBoundedRequests, //
                     ioThreadBaseNum,
                     ioThreadMultiplier, //
+                    maxResponseBodySize,
                     enabledProtocols, //
                     enabledCipherSuites, //
                     sslSessionCacheSize, //

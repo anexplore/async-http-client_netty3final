@@ -73,6 +73,11 @@ public final class AsyncHttpClientConfigDefaults {
     	return Integer.getInteger(ASYNC_CLIENT + "ioThreadBaseNum", 
     			Runtime.getRuntime().availableProcessors());
     }
+
+    public static int defaultMaxResponseBodySize() {
+        return Integer.getInteger(ASYNC_CLIENT + "maxResponseBodySize",
+                Integer.MAX_VALUE);
+    }
     
     public static int defaultIoThreadMultiplier() {
         return Integer.getInteger(ASYNC_CLIENT + "ioThreadMultiplier", 2);

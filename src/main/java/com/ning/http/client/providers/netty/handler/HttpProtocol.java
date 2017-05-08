@@ -29,6 +29,7 @@ import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
+import com.beust.jcommander.Strings;
 import com.ning.http.client.AsyncHandler;
 import com.ning.http.client.AsyncHandler.STATE;
 import com.ning.http.client.AsyncHttpClientConfig;
@@ -38,6 +39,7 @@ import com.ning.http.client.Realm;
 import com.ning.http.client.Realm.AuthScheme;
 import com.ning.http.client.Request;
 import com.ning.http.client.RequestBuilder;
+import com.ning.http.client.ResponseBodyTooLongException;
 import com.ning.http.client.ntlm.NTLMEngine;
 import com.ning.http.client.ntlm.NTLMEngineException;
 import com.ning.http.client.providers.netty.NettyAsyncHttpProviderConfig;
@@ -378,6 +380,16 @@ public final class HttpProtocol extends Protocol {
 
     private boolean exitAfterHandlingHeaders(Channel channel, NettyResponseFuture<?> future, HttpResponse response,
             AsyncHandler<?> handler, NettyResponseHeaders responseHeaders) throws IOException, Exception {
+        try {
+            long contentLength = -1;
+            if ((contentLength = HttpHeaders.getContentLength(response)) > config.getMaxResponseBodySize()) {
+                throw new ResponseBodyTooLongException(String.format("response body size %d exceed max size %d",
+                        contentLength, config.getMaxResponseBodySize()));
+            } 
+        } catch (ResponseBodyTooLongException tooLong) {
+            throw tooLong;
+        } catch(Exception ignore) {
+        }
         if (!response.headers().isEmpty() && handler.onHeadersReceived(responseHeaders) != STATE.CONTINUE) {
             finishUpdate(future, channel, HttpHeaders.isTransferEncodingChunked(response));
             return true;
