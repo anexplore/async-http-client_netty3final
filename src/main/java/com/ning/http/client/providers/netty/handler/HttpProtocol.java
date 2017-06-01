@@ -29,7 +29,6 @@ import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponse;
 
-import com.beust.jcommander.Strings;
 import com.ning.http.client.AsyncHandler;
 import com.ning.http.client.AsyncHandler.STATE;
 import com.ning.http.client.AsyncHttpClientConfig;
