@@ -77,6 +77,8 @@ public final class NettyResponseFuture<V> extends AbstractListenableFuture<V> {
     private final AtomicReference<ExecutionException> exEx = new AtomicReference<>();
     private volatile TimeoutsHolder timeoutsHolder;
 
+    private final AtomicLong chunkedSize = new AtomicLong(0);
+    
     // state mutated only inside the event loop
     private Channel channel;
     private Uri uri;
@@ -311,8 +313,12 @@ public final class NettyResponseFuture<V> extends AbstractListenableFuture<V> {
     public final void setHttpHeaders(HttpHeaders httpHeaders) {
         this.httpHeaders = httpHeaders;
     }
-
-    public int incrementAndGetCurrentRedirectCount() {
+    
+    public final long incrementAndGetChunkedSize(long chunkSize) {
+        return this.chunkedSize.addAndGet(chunkSize);
+    }
+    
+    public final int incrementAndGetCurrentRedirectCount() {
         return redirectCount.incrementAndGet();
     }
 

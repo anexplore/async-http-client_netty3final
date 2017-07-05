@@ -202,6 +202,11 @@ public final class HttpProtocol extends Protocol {
     private boolean updateBodyAndInterrupt(NettyResponseFuture<?> future, AsyncHandler<?> handler, NettyResponseBodyPart bodyPart)
             throws Exception {
         boolean interrupt = handler.onBodyPartReceived(bodyPart) != STATE.CONTINUE;
+        long contentLength = future.incrementAndGetChunkedSize(bodyPart.length());
+        if (contentLength > config.getMaxResponseBodySize()) {
+            throw new ResponseBodyTooLongException(String.format("response body size %d exceed max size %d",
+                    contentLength, config.getMaxResponseBodySize()));
+        }
         if (bodyPart.isUnderlyingConnectionToBeClosed())
             future.setKeepAlive(false);
         return interrupt;
