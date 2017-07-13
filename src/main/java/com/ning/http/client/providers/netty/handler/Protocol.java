@@ -28,7 +28,6 @@ import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.FluentCaseInsensitiveStringsMap;
 import com.ning.http.client.HttpResponseHeaders;
 import com.ning.http.client.HttpResponseStatus;
-import com.ning.http.client.MaxRedirectException;
 import com.ning.http.client.Realm;
 import com.ning.http.client.Realm.AuthScheme;
 import com.ning.http.client.Request;
@@ -113,10 +112,10 @@ public abstract class Protocol {
         	if (request.getMaxRedirects() != null ?
             		redirectCount > request.getMaxRedirects() :
             		redirectCount > config.getMaxRedirects()) {
-                throw new MaxRedirectException("Maximum redirect:[" + redirectCount +"] reached: config:" + 
-            		config.getMaxRedirects() + ",request:" +
-            		request.getMaxRedirects() );
-
+                /*throw new MaxRedirectException("Maximum redirect:[" + redirectCount +"] reached one of following limit:"
+                        + " global config " + config.getMaxRedirects() + ", current request " + request.getMaxRedirects());
+                */
+        	    return false;
             } else {
                 // We must allow 401 handling again.
                 future.getAndSetAuth(false);
