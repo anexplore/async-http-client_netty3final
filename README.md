@@ -1,6 +1,10 @@
 Async Http Client
 -----------------
 
+CopyFrom Async Http Client, only save the 1.9.x branch
+
+------
+
 Getting started [HTML](http://sonatype.github.com/async-http-client/) [PDF](http://is.gd/kexrN)
 
 Async Http Client library purpose is to allow Java applications to easily execute HTTP requests and asynchronously process the HTTP responses. The library also supports the WebSocket Protocol. The Async HTTP Client library is simple to use. First, in order to add it to your Maven project, simply add this dependency:
@@ -9,7 +13,7 @@ Async Http Client library purpose is to allow Java applications to easily execut
          <dependency>
              <groupId>com.ning</groupId>
              <artifactId>async-http-client</artifactId>
-             <version>1.7.3</version>
+             <version>1.9.32.1</version>
          </dependency>
 ```
 
