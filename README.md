@@ -1,7 +1,16 @@
 Async Http Client
 -----------------
 
-CopyFrom Async Http Client, only save the 1.9.x branch
+CopyFrom Async-Http-Client, only save and use the 1.9.x branch
+
+### 修改
+* 新增几种异常类型方便错误判断
+* 修改超出最大跳转次数落地返回最后一次的Response内容以及false而不是简单抛出异常
+* 增加Response-Body大小限制 超出最大限制抛出异常
+* 增加IO线程基数值而不仅仅使用CPU核数 增强调整灵活性
+* 修改Cookie逻辑发生跳转时上个请求的Cookie依然回带入下次请求
+* 为单个请求增加单独的读超时参数
+* 为单个请求增加单独的最大跳转次数参数
 
 ------
 
