@@ -11,6 +11,7 @@ CopyFrom Async-Http-Client, only save and use the 1.9.x branch
 * 修改Cookie逻辑发生跳转时上个请求的Cookie依然回带入下次请求
 * 为单个请求增加单独的读超时参数
 * 为单个请求增加单独的最大跳转次数参数
+* 增加入流量统计(如果有数据压缩那么计算的是解压之前流量)
 
 ------
 
