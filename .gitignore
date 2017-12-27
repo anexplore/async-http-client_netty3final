@@ -19,3 +19,4 @@ test-output
 work
 atlassian-ide-plugin.xml
 /nb-configuration.xml
+/bin/

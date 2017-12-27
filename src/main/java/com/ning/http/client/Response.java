@@ -182,6 +182,12 @@ public interface Response {
      */
     boolean hasResponseBody();
 
+    /**
+     * Total Body size before decompressed 
+     * @return Raw body size before decompressed
+     */
+    int getResponseBodyRawSize();
+    
     public static class ResponseBuilder {
         private final List<HttpResponseBodyPart> bodyParts = new ArrayList<>();
         private HttpResponseStatus status;

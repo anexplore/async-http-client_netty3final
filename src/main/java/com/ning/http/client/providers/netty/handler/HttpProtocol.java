@@ -202,7 +202,7 @@ public final class HttpProtocol extends Protocol {
     private boolean updateBodyAndInterrupt(NettyResponseFuture<?> future, AsyncHandler<?> handler, NettyResponseBodyPart bodyPart)
             throws Exception {
         boolean interrupt = handler.onBodyPartReceived(bodyPart) != STATE.CONTINUE;
-        long contentLength = future.incrementAndGetChunkedSize(bodyPart.length());
+        long contentLength = future.incrementAndGetFinalBodySize(bodyPart.length());
         if (contentLength > config.getMaxResponseBodySize()) {
             throw new ResponseBodyTooLongException(String.format("response body size %d exceed max size %d",
                     contentLength, config.getMaxResponseBodySize()));
@@ -408,11 +408,16 @@ public final class HttpProtocol extends Protocol {
             // no chunks expected, exiting
             if (response.getContent().readableBytes() > 0)
                 // FIXME no need to notify an empty bodypart?
-                updateBodyAndInterrupt(future, handler, new NettyResponseBodyPart(response, null, true));
+                updateBodyAndInterrupt(future, handler, newNettyResponseBodyPart(future, response, null, true));
             finishUpdate(future, channel, false);
             return true;
         }
         return false;
+    }
+    
+    private NettyResponseBodyPart newNettyResponseBodyPart(NettyResponseFuture<?> future, HttpResponse response,
+            HttpChunk chunk, boolean last) {
+        return new NettyResponseBodyPart(response, chunk, future.getAndSetRawBodyPartSize(0), last);
     }
 
     private boolean handleHttpResponse(final HttpResponse response,//
@@ -454,7 +459,7 @@ public final class HttpProtocol extends Protocol {
 
         boolean last = chunk.isLast();
         // we don't notify updateBodyAndInterrupt with the last chunk as it's empty
-        if (last || updateBodyAndInterrupt(future, handler, new NettyResponseBodyPart(null, chunk, last))) {
+        if (last || updateBodyAndInterrupt(future, handler, newNettyResponseBodyPart(future, null, chunk, last))) {
 
             // only possible if last is true
             if (chunk instanceof HttpChunkTrailer) {

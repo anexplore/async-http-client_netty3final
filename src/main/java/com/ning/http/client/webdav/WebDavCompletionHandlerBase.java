@@ -215,6 +215,12 @@ public abstract class WebDavCompletionHandlerBase<T> implements AsyncHandler<T> 
                 public boolean hasResponseBody() {
                     return wrappedResponse.hasResponseBody();
                 }
+
+                @Override
+                public int getResponseBodyRawSize() {
+                    //TODO implements this method
+                    return 0;
+                }
             };
         }
 

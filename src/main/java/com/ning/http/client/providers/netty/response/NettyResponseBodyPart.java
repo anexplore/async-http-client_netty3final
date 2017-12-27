@@ -33,15 +33,25 @@ public class NettyResponseBodyPart extends HttpResponseBodyPart {
     private final ChannelBuffer content;
     private volatile byte[] bytes;
     private final int length;
-
+    private final int rawLength;
+    
     public NettyResponseBodyPart(HttpResponse response, boolean last) {
-        this(response, null, last);
+        this(response, null, 0, last);
     }
 
+    public NettyResponseBodyPart(HttpResponse response, int rawContentLength, boolean last) {
+        this(response, null, rawContentLength, last);
+    }
+    
     public NettyResponseBodyPart(HttpResponse response, HttpChunk chunk, boolean last) {
+        this(response, chunk, 0, last);
+    }
+    
+    public NettyResponseBodyPart(HttpResponse response, HttpChunk chunk, int rawLength, boolean last) {
         super(last);
         content = chunk != null ? chunk.getContent() : response.getContent();
         length = content.readableBytes();
+        this.rawLength = rawLength == 0 ? length : rawLength;
     }
 
     /**
@@ -78,5 +88,9 @@ public class NettyResponseBodyPart extends HttpResponseBodyPart {
     @Override
     public int length() {
         return length;
+    }
+    
+    public int rawLength() {
+        return rawLength;
     }
 }

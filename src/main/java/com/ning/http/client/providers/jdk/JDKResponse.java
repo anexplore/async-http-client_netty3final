@@ -100,4 +100,10 @@ public class JDKResponse extends ResponseBase {
         }
         return localCookies;
     }
+
+    @Override
+    public int getResponseBodyRawSize() {
+        //TODO implements this method
+        return 0;
+    }
 }

@@ -194,4 +194,11 @@ public class GrizzlyResponse extends ResponseBase {
                 Charsets.ASCII_CHARSET :
                 Charsets.lookupCharset(charsetLocal);
     }
+
+
+    @Override
+    public int getResponseBodyRawSize() {
+        //TODO implements this method
+        return 0;
+    }
 }

@@ -76,8 +76,10 @@ public final class NettyResponseFuture<V> extends AbstractListenableFuture<V> {
     private final AtomicReference<V> content = new AtomicReference<>();
     private final AtomicReference<ExecutionException> exEx = new AtomicReference<>();
     private volatile TimeoutsHolder timeoutsHolder;
-
-    private final AtomicLong chunkedSize = new AtomicLong(0);
+    // current raw http body part size
+    private final AtomicInteger rawBodyPartSize = new AtomicInteger(0);
+    // Total body size of all http body parts(after decompresses)
+    private final AtomicLong finalBodySize = new AtomicLong(0);
     
     // state mutated only inside the event loop
     private Channel channel;
@@ -314,8 +316,16 @@ public final class NettyResponseFuture<V> extends AbstractListenableFuture<V> {
         this.httpHeaders = httpHeaders;
     }
     
-    public final long incrementAndGetChunkedSize(long chunkSize) {
-        return this.chunkedSize.addAndGet(chunkSize);
+    public final int getRawBodyPartSize() {
+        return this.rawBodyPartSize.get();
+    }
+    
+    public final int getAndSetRawBodyPartSize(int partSize) {
+        return this.rawBodyPartSize.getAndSet(partSize);
+    }
+    
+    public final long incrementAndGetFinalBodySize(long chunkSize) {
+        return this.finalBodySize.addAndGet(chunkSize);
     }
     
     public final int incrementAndGetCurrentRedirectCount() {

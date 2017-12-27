@@ -54,6 +54,7 @@ import com.ning.http.client.providers.netty.channel.pool.NoopChannelPool;
 import com.ning.http.client.providers.netty.chmv8.ConcurrentHashMapV8;
 import com.ning.http.client.providers.netty.future.NettyResponseFuture;
 import com.ning.http.client.providers.netty.handler.HttpProtocol;
+import com.ning.http.client.providers.netty.handler.InputTrafficCountHandler;
 import com.ning.http.client.providers.netty.handler.Processor;
 import com.ning.http.client.providers.netty.handler.Protocol;
 import com.ning.http.client.providers.netty.handler.WebSocketProtocol;
@@ -77,6 +78,7 @@ public class ChannelManager {
     public static final String HTTP_HANDLER = "httpHandler";
     public static final String SSL_HANDLER = "sslHandler";
     public static final String HTTP_PROCESSOR = "httpProcessor";
+    public static final String INPUT_TRAFFIC_HANDLER = "inputTrafficHandler";
     public static final String WS_PROCESSOR = "wsProcessor";
     public static final String DEFLATER_HANDLER = "deflater";
     public static final String INFLATER_HANDLER = "inflater";
@@ -226,6 +228,7 @@ public class ChannelManager {
             public ChannelPipeline getPipeline() throws Exception {
                 ChannelPipeline pipeline = pipeline();
                 pipeline.addLast(HTTP_HANDLER, newHttpClientCodec());
+                pipeline.addLast(INPUT_TRAFFIC_HANDLER, new InputTrafficCountHandler());
                 pipeline.addLast(INFLATER_HANDLER, newHttpContentDecompressor());
                 pipeline.addLast(CHUNKED_WRITER_HANDLER, new ChunkedWriteHandler());
                 pipeline.addLast(HTTP_PROCESSOR, httpProcessor);
@@ -242,6 +245,7 @@ public class ChannelManager {
             public ChannelPipeline getPipeline() throws Exception {
                 ChannelPipeline pipeline = pipeline();
                 pipeline.addLast(HTTP_HANDLER, newHttpClientCodec());
+                pipeline.addLast(INPUT_TRAFFIC_HANDLER, new InputTrafficCountHandler());
                 pipeline.addLast(WS_PROCESSOR, wsProcessor);
 
                 if (nettyConfig.getWsAdditionalPipelineInitializer() != null)
@@ -257,6 +261,7 @@ public class ChannelManager {
                 ChannelPipeline pipeline = pipeline();
                 pipeline.addLast(SSL_HANDLER, new SslInitializer(ChannelManager.this));
                 pipeline.addLast(HTTP_HANDLER, newHttpClientCodec());
+                pipeline.addLast(INPUT_TRAFFIC_HANDLER, new InputTrafficCountHandler());
                 pipeline.addLast(INFLATER_HANDLER, newHttpContentDecompressor());
                 pipeline.addLast(CHUNKED_WRITER_HANDLER, new ChunkedWriteHandler());
                 pipeline.addLast(HTTP_PROCESSOR, httpProcessor);
@@ -274,6 +279,7 @@ public class ChannelManager {
                 ChannelPipeline pipeline = pipeline();
                 pipeline.addLast(SSL_HANDLER, new SslInitializer(ChannelManager.this));
                 pipeline.addLast(HTTP_HANDLER, newHttpClientCodec());
+                pipeline.addLast(INPUT_TRAFFIC_HANDLER, new InputTrafficCountHandler());
                 pipeline.addLast(WS_PROCESSOR, wsProcessor);
 
                 if (nettyConfig.getWssAdditionalPipelineInitializer() != null)
@@ -290,7 +296,7 @@ public class ChannelManager {
                 @Override
                 protected String getTargetContentEncoding(String contentEncoding) throws Exception {
                     return contentEncoding;
-                }
+                } 
             };
         else
             return new HttpContentDecompressor();

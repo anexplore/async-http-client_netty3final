@@ -111,4 +111,13 @@ public class NettyResponse extends ResponseBase {
         }
         return cookies;
     }
+
+    @Override
+    public int getResponseBodyRawSize() {
+        int length = 0;
+        for (int i = 0; i < bodyParts.size(); i++) {
+            length += NettyResponseBodyPart.class.cast(bodyParts.get(i)).rawLength();
+        }
+        return length;
+    }
 }
