@@ -181,7 +181,9 @@ public abstract class Protocol {
             }
 
             logger.debug("Redirecting to {}", newUrl);
-
+            if (request.getCookies() != null) {
+                requestBuilder.setCookies(request.getCookies());
+            }
             for (String cookieStr : responseHeaders.getAll(HttpHeaders.Names.SET_COOKIE)) {
                 Cookie c = CookieDecoder.decode(cookieStr);
                 if (c != null)
